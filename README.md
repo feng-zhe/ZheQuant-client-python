@@ -1,2 +1,2 @@
-# ZheQuant-client-python
-The client for ZheQuant
+# Intro
+The client for ZheQuant. CURRENTLY UNDER DELVEOPMENT, NO WORKABLE VERSION.
