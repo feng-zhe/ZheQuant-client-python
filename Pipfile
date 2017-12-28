@@ -13,6 +13,7 @@ requests = "*"
 
 [dev-packages]
 
+pylint = "*"
 
 
 [requires]
