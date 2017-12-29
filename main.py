@@ -3,6 +3,7 @@ Main file of the Client for ZheQuant
 '''
 import json
 import os
+import hashlib
 import requests
 from cmd2 import Cmd
 from zq_gen.str import cmd_str2dic
@@ -30,9 +31,19 @@ class ZheQuantClient(Cmd):
         '''
         url = self.config.server_url + '/user/auth'
         inputs = cmd_str2dic(line)
+        # check inputs
+        if '-u' not in inputs:
+            print('[!]missing -u for user id')
+            return
+        elif '-p' not in inputs:
+            print('[!]missing -p for password')
+            return
+        # generate requests
+        md5 = hashlib.md5()
+        md5.update(bytes(inputs['-p'], 'utf-8'))
         payload = {
                 "userId"   : inputs['-u'],
-                "password" : inputs['-p']
+                "password" : md5.hexdigest()
                 }
         rsp_raw = requests.post(url, data=payload)
         rsp = rsp_raw.json()
