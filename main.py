@@ -5,6 +5,7 @@ import json
 import os
 import requests
 from cmd2 import Cmd
+from zq_gen.str import cmd_str2dic
 
 class ZheQuantClient(Cmd):
     '''ZheQuant Client implementation class'''
@@ -28,10 +29,11 @@ class ZheQuantClient(Cmd):
         Usage: login -u <userId> -p <password>
         '''
         url = self.config.server_url + '/user/auth'
+        inputs = cmd_str2dic(line)
         payload = {
-                "userId"   : "",
-                "password" : ""
-                } #TODO: parse the input and fill the payload
+                "userId"   : inputs['-u'],
+                "password" : inputs['-p']
+                }
         rsp_raw = requests.post(url, data=payload)
         rsp = rsp_raw.json()
         if rsp_raw.status_code == requests.codes['ok'] \
@@ -50,13 +52,14 @@ class ZheQuantClient(Cmd):
         Example: schedule -n my_job -dsc just_for_test -t mv_avg -p "-d 20 -n 5"
         '''
         url = self.config.server_url + '/quant/jobs'
+        inputs = cmd_str2dic(line)
         payload = {
-                "userId"      : "",
-                "token"       : "",
-                "job_name"    : "",
-                "description" : "",
-                "cmd"         : ""
-                } #TODO: parse the input and fill the payload
+                "userId"      : self.session['userId'],
+                "token"       : self.session['token'],
+                "job_name"    : inputs['-n'],
+                "description" : inputs['-d'],
+                "cmd"         : line
+                }
         rsp_raw = requests.post(url, data=payload)
         if rsp_raw.status_code == requests.codes['ok']:
             print('[x] Job scheduled!')
