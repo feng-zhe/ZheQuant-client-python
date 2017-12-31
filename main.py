@@ -33,10 +33,10 @@ class ZheQuantClient(Cmd):
         inputs = cmd_str2dic(line)
         # check inputs
         if '-u' not in inputs:
-            print('[!]missing -u for user id')
+            print('[!] missing -u for user id')
             return
         elif '-p' not in inputs:
-            print('[!]missing -p for password')
+            print('[!] missing -p for password')
             return
         # generate requests
         md5 = hashlib.md5()
@@ -99,9 +99,27 @@ class ZheQuantClient(Cmd):
         '''
         Show information.
 
-        Usage: TODO
+        Usage: display <target>
+
+        <target>: 'jobs'
         '''
-        #TODO
+        url = self.config.server_url + '/quant/results'
+        inputs = cmd_str2dic(line)
+        # check inputs
+        if len(inputs)<2: 
+            print('[!] missing target')
+            return
+        # generate requests
+        payload = {
+                "userId" : self.session['userId']
+                "token"  : self.session['token']
+                }
+        rsp_raw = requests.post(url, data=payload)
+        rsp = rsp_raw.json()
+        if rsp_raw.status_code == requests.codes['ok']:
+            print(rsp['results']) #TODO: use terminaltables
+        else:
+            print('[!] Server returns error code: ' + rsp_raw)
         pass
 
     def preloop(self):
