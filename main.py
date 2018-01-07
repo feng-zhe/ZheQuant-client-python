@@ -111,7 +111,7 @@ class ZheQuantClient(Cmd):
             return
         # generate requests
         payload = {
-                "userId" : self.session['userId']
+                "userId" : self.session['userId'],
                 "token"  : self.session['token']
                 }
         rsp_raw = requests.post(url, data=payload)
