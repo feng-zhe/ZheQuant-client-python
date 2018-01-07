@@ -68,7 +68,7 @@ class ZheQuantClient(Cmd):
                 "userId"      : self.session['userId'],
                 "token"       : self.session['token'],
                 "job_name"    : inputs['-n'],
-                "description" : inputs['-d'],
+                "description" : inputs['-dsc'],
                 "cmd"         : line
                 }
         rsp_raw = requests.post(url, data=payload)
@@ -103,24 +103,24 @@ class ZheQuantClient(Cmd):
 
         <target>: 'jobs'
         '''
-        url = self.config['server_url'] + '/quant/results'
-        inputs = cmd_str2dic(line)
         # check inputs
-        if len(inputs)<2: 
+        inputs = cmd_str2dic(line)
+        if len(inputs) < 1: 
             print('[!] missing target')
             return
-        # generate requests
-        payload = {
-                "userId" : self.session['userId'],
-                "token"  : self.session['token']
-                }
-        rsp_raw = requests.post(url, data=payload)
-        rsp = rsp_raw.json()
-        if rsp_raw.status_code == requests.codes['ok']:
-            print(rsp['results']) #TODO: use terminaltables
-        else:
-            print('[!] Server returns error code: ' + rsp_raw)
-        pass
+        if inputs['cmd_name'] == 'jobs':
+            url = self.config['server_url'] + '/quant/results'
+            # generate requests
+            payload = {
+                    "userId" : self.session['userId'],
+                    "token"  : self.session['token']
+                    }
+            rsp_raw = requests.post(url, data=payload)
+            rsp = rsp_raw.json()
+            if rsp_raw.status_code == requests.codes['ok']:
+                print(rsp['results']) #TODO: use terminaltables
+            else:
+                print('[!] Server returns error code: ' + rsp_raw)
 
     def preloop(self):
         '''
