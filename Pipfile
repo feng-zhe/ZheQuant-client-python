@@ -9,6 +9,7 @@ name = "pypi"
 
 requests = "*"
 "cmd2" = "*"
+terminaltables = "*"
 
 
 [dev-packages]

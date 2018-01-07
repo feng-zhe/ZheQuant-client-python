@@ -6,6 +6,7 @@ import os
 import hashlib
 import requests
 from cmd2 import Cmd
+from terminaltables import AsciiTable
 from zq_gen.str import cmd_str2dic
 
 class ZheQuantClient(Cmd):
@@ -118,7 +119,20 @@ class ZheQuantClient(Cmd):
             rsp_raw = requests.post(url, data=payload)
             rsp = rsp_raw.json()
             if rsp_raw.status_code == requests.codes['ok']:
-                print(rsp['results']) #TODO: use terminaltables
+                table_data = [
+                        ['name', 'creator', 'create_date', 'status', 'description', 'cmd']
+                        ]
+                for result in rsp['results']:
+                    table_data.append([
+                        result['name'],
+                        result['creator'],
+                        result['create_date'],
+                        result['status'],
+                        result['description'],
+                        result['cmd']
+                        ])
+                table = AsciiTable(table_data)
+                print(table.table)
             else:
                 print('[!] Server returns error code: ' + rsp_raw)
 
