@@ -29,7 +29,7 @@ class ZheQuantClient(Cmd):
 
         Usage: login -u <userId> -p <password>
         '''
-        url = self.config.server_url + '/user/auth'
+        url = self.config['server_url'] + '/user/auth'
         inputs = cmd_str2dic(line)
         # check inputs
         if '-u' not in inputs:
@@ -62,7 +62,7 @@ class ZheQuantClient(Cmd):
 
         Example: schedule -n my_job -dsc just_for_test -t mv_avg -p "-d 20 -n 5"
         '''
-        url = self.config.server_url + '/quant/jobs'
+        url = self.config['server_url'] + '/quant/jobs'
         inputs = cmd_str2dic(line)
         payload = {
                 "userId"      : self.session['userId'],
@@ -103,7 +103,7 @@ class ZheQuantClient(Cmd):
 
         <target>: 'jobs'
         '''
-        url = self.config.server_url + '/quant/results'
+        url = self.config['server_url'] + '/quant/results'
         inputs = cmd_str2dic(line)
         # check inputs
         if len(inputs)<2: 
