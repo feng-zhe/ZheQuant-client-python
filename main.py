@@ -70,7 +70,7 @@ class ZheQuantClient(Cmd):
                 "token"       : self.session['token'],
                 "job_name"    : inputs['-n'],
                 "description" : inputs['-dsc'],
-                "cmd"         : line
+                "cmd"         : 'schedule ' + line
                 }
         rsp_raw = requests.post(url, data=payload)
         if rsp_raw.status_code == requests.codes['ok']:
